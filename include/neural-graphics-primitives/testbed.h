@@ -44,6 +44,9 @@
 
 #include <librealsense2/rs.hpp>
 #include "opencv4/opencv2/core.hpp"
+#include "opencv4/opencv2/highgui.hpp"
+#include "opencv4/opencv2/aruco.hpp"
+#include "opencv4/opencv2/calib3d.hpp"
 
 struct GLFWwindow;
 
