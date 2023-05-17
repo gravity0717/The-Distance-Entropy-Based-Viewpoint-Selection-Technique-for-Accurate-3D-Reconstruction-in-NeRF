@@ -1,4 +1,5 @@
-# advacedML-NGP
+# AdvacedML-NGP
+고급머신러닝 수업 프로젝트
 
 ## License and Citation
 
