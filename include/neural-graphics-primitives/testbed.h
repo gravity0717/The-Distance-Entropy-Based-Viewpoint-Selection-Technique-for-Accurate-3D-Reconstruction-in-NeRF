@@ -105,6 +105,9 @@ public:
 	cv::Mat distCoeffs = cv::Mat::zeros(5, 1, CV_64F);
 	std::vector<cv::Vec3d> rvecs, tvecs;
 	cv::Mat R;
+	mat4x3 cameraPose = mat4x3(1.0f);
+	void get_aruco_pose();
+	void visualize_camera_pose(ImDrawList* list, const mat4& world2proj);
 
 	GLuint aruco_texture;
 	void color_to_texture();

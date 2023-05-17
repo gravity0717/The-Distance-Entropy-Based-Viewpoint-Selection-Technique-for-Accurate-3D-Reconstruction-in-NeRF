@@ -1789,7 +1789,7 @@ void Testbed::draw_visualizations(ImDrawList* list, const mat4x3& camera_matrix)
 
 	mat4 world2proj = view2proj * world2view;
 	float aspect = (float)m_window_res.x / (float)m_window_res.y;
-
+	visualize_camera_pose(list, world2proj);
 	// Visualize NeRF training poses
 	if (m_testbed_mode == ETestbedMode::Nerf) {
 		if (m_nerf.visualize_cameras) {

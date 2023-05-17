@@ -31,10 +31,20 @@ void Testbed::get_aruco_pose(){
     cv::aruco::detectMarkers(outputImage, dictionary, markerCorners, markerIds);
     if(markerIds.size() > 0){
 		cv::aruco::drawDetectedMarkers(outputImage, markerCorners, markerIds);
+        cv::aruco::estimatePoseSingleMarkers(markerCorners, markerLength,  cameraMatrix, distCoeffs,
+            rvecs, tvecs);
+        
+        cv::Rodrigues(rvecs[0], R);
+        const double* dataPtr = R.ptr<double>(0);
+        for(int i = 0; i < 3; ++i){
+            for(int j = 0; j < 3; ++j){
+                cameraPose[j][i] = dataPtr[i * 3 + j];
+            }
+        }
+        for(int i = 0; i < 3; ++i){
+            cameraPose[3][i] = tvecs[0][i];
+        }
 	}
-	cv::aruco::estimatePoseSingleMarkers(markerCorners, markerLength,  cameraMatrix, distCoeffs,
-								rvecs, tvecs);
-    
 }
 
 void Testbed::color_to_texture(){
@@ -46,6 +56,12 @@ void Testbed::color_to_texture(){
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 	glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, outputImage.cols, outputImage.rows, 0, GL_BGR, GL_UNSIGNED_BYTE, outputImage.ptr());
+}
+
+void Testbed::visualize_camera_pose(ImDrawList* list, const mat4& world2proj){
+    ivec2 res{color_width, color_height};
+    float aspect = float(res.x) / float(res.y);
+    visualize_nerf_camera(list, world2proj, cameraPose, aspect, 0x80ffffff);
 }
 
 
