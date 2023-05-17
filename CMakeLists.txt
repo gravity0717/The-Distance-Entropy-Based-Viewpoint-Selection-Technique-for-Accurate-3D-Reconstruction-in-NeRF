@@ -248,6 +248,8 @@ endif()
 add_subdirectory("dependencies/zstr")
 list(APPEND NGP_LIBRARIES zstr::zstr)
 
+find_package(OpenCV REQUIRED)
+find_package(realsense2 REQUIRED)
 
 ###############################################################################
 # Program
@@ -332,9 +334,9 @@ add_library(ngp STATIC ${NGP_SOURCES})
 set_target_properties(ngp PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON CUDA_SEPARABLE_COMPILATION ON)
 target_compile_definitions(ngp PUBLIC ${NGP_DEFINITIONS})
 target_compile_options(ngp PUBLIC $<$<COMPILE_LANGUAGE:CUDA>:${CUDA_NVCC_FLAGS}>)
-target_include_directories(ngp PUBLIC ${NGP_INCLUDE_DIRECTORIES})
+target_include_directories(ngp PUBLIC ${NGP_INCLUDE_DIRECTORIES} ${OpenCV_INCLUDE_DIRS} ${realsense2_INCLUDE_DIRS})
 target_link_directories(ngp PUBLIC ${NGP_LINK_DIRECTORIES})
-target_link_libraries(ngp PUBLIC ${NGP_LIBRARIES} tiny-cuda-nn)
+target_link_libraries(ngp PUBLIC ${NGP_LIBRARIES} tiny-cuda-nn ${OpenCV_LIBS} ${realsense2_LIBRARY})
 
 # Copy shared libraries to the binary directory as needed
 if (NGP_VULKAN)
