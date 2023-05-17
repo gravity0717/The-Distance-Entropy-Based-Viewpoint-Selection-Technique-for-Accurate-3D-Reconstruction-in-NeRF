@@ -1055,6 +1055,8 @@ __global__ void composite_kernel_nerf(
 			rgb = vec3(dot(cam_fwd, pos - origin) * depth_scale);
 		} else if (render_mode == ERenderMode::AO) {
 			rgb = vec3(alpha);
+		} else if (render_mode == ERenderMode::Entropy){
+			rgb = vec3(-log(weight) / log(n_elements));
 		}
 
 		local_rgba += vec4(rgb * weight, weight);
