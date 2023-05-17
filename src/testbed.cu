@@ -1749,6 +1749,11 @@ void Testbed::imgui() {
 	}
 
 	ImGui::End();
+
+	ImGui::Begin("Image");
+	ImGui::Image( reinterpret_cast<void*>( static_cast<intptr_t>( aruco_texture ) ), ImVec2( outputImage.cols, outputImage.rows ) );
+	ImGui::End();
+
 }
 
 void Testbed::visualize_nerf_cameras(ImDrawList* list, const mat4& world2proj) {
@@ -3342,6 +3347,11 @@ void Testbed::update_vr_performance_settings() {
 }
 
 bool Testbed::frame() {
+
+	get_color_image();
+	get_aruco_pose();
+	color_to_texture();
+
 #ifdef NGP_GUI
 	if (m_render_window) {
 		if (!begin_frame()) {

@@ -42,6 +42,9 @@
 
 #include <thread>
 
+#include <librealsense2/rs.hpp>
+#include "opencv4/opencv2/core.hpp"
+
 struct GLFWwindow;
 
 TCNN_NAMESPACE_BEGIN
@@ -75,6 +78,33 @@ public:
 	void load_training_data(const fs::path& path);
 	void reload_training_data();
 	void clear_training_data();
+
+	// realsense
+	rs2::pipeline pipe;
+	rs2::config cfg;
+	rs2::frameset frames;
+	rs2::frame color;
+	rs2_intrinsics intrinsics;
+
+	int color_width = 640;
+	int color_height = 480;
+
+	void init_camera();
+	void get_color_image();
+
+	// aruco
+	cv::Mat colorImage;
+	cv::Mat outputImage;
+	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+	std::vector<int> markerIds;
+	std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
+	cv::Mat cameraMatrix;
+	cv::Mat distCoeffs = cv::Mat::zeros(5, 1, CV_64F);
+	std::vector<cv::Vec3d> rvecs, tvecs;
+	cv::Mat R;
+
+	GLuint aruco_texture;
+	void color_to_texture();
 
 	void set_mode(ETestbedMode mode);
 
