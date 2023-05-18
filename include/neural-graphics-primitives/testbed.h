@@ -106,6 +106,8 @@ public:
 	std::vector<cv::Vec3d> rvecs, tvecs;
 	cv::Mat R;
 	mat4x3 cameraPose = mat4x3(1.0f);
+	bool isaruco = false;
+
 	void get_aruco_pose();
 	void visualize_camera_pose(ImDrawList* list, const mat4& world2proj);
 

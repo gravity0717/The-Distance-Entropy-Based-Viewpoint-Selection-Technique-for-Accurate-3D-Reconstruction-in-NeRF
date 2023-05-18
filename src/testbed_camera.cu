@@ -44,7 +44,11 @@ void Testbed::get_aruco_pose(){
         for(int i = 0; i < 3; ++i){
             cameraPose[3][i] = tvecs[0][i];
         }
+        isaruco = true;
 	}
+    else {
+        isaruco = false;
+    }
 }
 
 void Testbed::color_to_texture(){
@@ -61,7 +65,7 @@ void Testbed::color_to_texture(){
 void Testbed::visualize_camera_pose(ImDrawList* list, const mat4& world2proj){
     ivec2 res{color_width, color_height};
     float aspect = float(res.x) / float(res.y);
-    visualize_nerf_camera(list, world2proj, cameraPose, aspect, 0x80ffffff);
+    visualize_nerf_camera(list, world2proj, cameraPose, aspect, isaruco ? 0x48ff00ff : 0xfc050dff);
 }
 
 
