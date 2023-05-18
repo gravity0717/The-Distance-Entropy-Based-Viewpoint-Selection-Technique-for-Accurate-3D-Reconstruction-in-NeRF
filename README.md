@@ -1,4 +1,4 @@
-# AdvacedML-NGP
+# AdvancedML-NGP
 고급머신러닝 수업 프로젝트
 
 ## Introduction
