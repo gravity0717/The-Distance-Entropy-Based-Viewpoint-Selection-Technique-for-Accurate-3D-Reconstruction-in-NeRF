@@ -71,4 +71,57 @@ void Testbed::visualize_camera_pose(ImDrawList* list, const mat4& world2proj){
 }
 
 
+void Testbed::gen_candidate_views(){
+    // define theta phi to xyz function using lambda
+    auto theta_phi_to_xyz = [](float theta, float phi, float radius) -> glm::vec3 {
+    float x = radius * sin(theta) * cos(phi);
+    float y = radius * sin(theta) * sin(phi);
+    float z = radius * cos(theta);
+    return glm::vec3(x, y, z);
+};
+
+    vector<float> thetas(n_steps);
+    vector<float> radiuses(n_steps);
+    vector<int> n_view_in_steps(n_steps);
+
+    // calculate thetas and radiuses
+    for (int i = 0; i < num_steps; ++i) {
+        thetas[i] = (M_PI / 2) * static_cast<float>(i) / num_steps;
+        radiuses[i] = sin(thetas[i]);
+    }
+
+    float radius_sum = std::accumulate(radiuses.begin(), radiuses.end(), 0.0f);
+    for (int i = 0; i < n_steps; ++i) {
+        n_view_in_steps[i] = std::round(n_points * radiuses[i] / radius_sum);
+    }
+
+    // generate points and rotation matrices
+    for (int i = 0; i < n_steps; ++i) {
+        for (int j = 0; j < n_view[i]; ++j) {
+            float phi = 2 * M_PI * static_cast<float>(j) / n_view[i];
+            vec3 tvec = theta_phi_to_xyz(thetas[i], phi, radius) + origin;
+
+            // calculate orientation
+            vec3 u_z = -1.0f * normalize(theta_phi_to_xyz(thetas[i], phi, 1));
+            vec3 u_y = normalize(theta_phi_to_xyz(thetas[i] + M_PI / 2, phi, 1));
+            vec3 u_x = normalize(cross(u_y, u_z));
+
+            // rotation matrix
+            mat3 rmat = inverse(mat3(u_x, u_y, u_z));
+
+            // Convert rotation matrix to quaternion
+            quat tmp_quat = quat_cast(rmat);
+
+            // Get angle and axis quaternion
+            float angle = angle(tmp_quat);
+            vec3 axis = axis(tmp_quat);
+
+            // Rotation vector is angle * axis
+            vec3 rvec = angle * axis;
+
+            m_candidate_views.push_back({tvec, rvec});
+        }
+    }
+}
+
 NGP_NAMESPACE_END

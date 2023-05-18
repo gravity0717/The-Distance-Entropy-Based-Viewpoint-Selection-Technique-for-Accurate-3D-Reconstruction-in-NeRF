@@ -82,6 +82,22 @@ public:
 	void reload_training_data();
 	void clear_training_data();
 
+	// Candidate Views
+	struct CandidateView {
+		vec3 tvec;
+		vec3 rvec;
+		// vec3 up;
+		// vec2 focal_length;
+		// float fov;
+		// float score;
+	};
+	std::vector<CandidateView> m_candidate_views;
+	void gen_candidate_views();
+	const int n_points = 100;
+	const int n_steps = 5;
+	const float radius = 1.5f;
+	const vec3 origin = vec3(0.0f, 0.0f, 0.0f);
+
 	// realsense
 	rs2::pipeline pipe;
 	rs2::config cfg;
@@ -116,6 +132,7 @@ public:
 
 	// Pose ImGUI
 	GLuint aruco_texture;
+
 
 	void color_to_texture();
 	void visualize_camera_pose(ImDrawList* list, const mat4& world2proj);
