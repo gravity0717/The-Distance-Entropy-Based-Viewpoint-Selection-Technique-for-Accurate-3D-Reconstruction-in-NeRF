@@ -1751,7 +1751,7 @@ void Testbed::imgui() {
 	ImGui::End();
 
 	ImGui::Begin("Image");
-	ImGui::Image( reinterpret_cast<void*>( static_cast<intptr_t>( aruco_texture ) ), ImVec2( outputImage.cols, outputImage.rows ) );
+	ImGui::Image( reinterpret_cast<void*>( static_cast<intptr_t>( aruco_texture ) ), ImVec2( ImGui::GetContentRegionAvail().x, ImGui::GetContentRegionAvail().y ) );
 	ImGui::End();
 
 }
