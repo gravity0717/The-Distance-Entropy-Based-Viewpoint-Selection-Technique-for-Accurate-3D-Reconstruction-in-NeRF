@@ -28,3 +28,4 @@ requirements.txt
 /notebooks
 /scripts
 .editorconfig
+/dependencies
