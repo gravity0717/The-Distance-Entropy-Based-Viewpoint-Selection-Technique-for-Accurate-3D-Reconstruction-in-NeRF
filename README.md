@@ -11,7 +11,7 @@ Next-Best-View
 - [x] Instant-NGP 코드 분석
 - [x] Entropy 랜더링
 - [x] Camera 연결
-- [ ] Camera pose estimation (ArUco)
+- [x] Camera pose estimation (ArUco)
 - [ ] Candidate view 생성?
 - [ ] View-selection
 - [ ] View pose rendering

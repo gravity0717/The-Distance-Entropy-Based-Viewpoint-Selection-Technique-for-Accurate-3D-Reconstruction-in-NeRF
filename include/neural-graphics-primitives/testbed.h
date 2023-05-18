@@ -98,21 +98,29 @@ public:
 	// aruco
 	cv::Mat colorImage;
 	cv::Mat outputImage;
-	cv::Ptr<cv::aruco::Dictionary> dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+	cv::Ptr<cv::aruco::Dictionary> arucoDict = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_6X6_250);
+	double markerLength = 0.0515;
+	double gap = 0.005;
+	cv::Ptr<cv::aruco::GridBoard> board;
 	std::vector<int> markerIds;
 	std::vector<std::vector<cv::Point2f>> markerCorners, rejectedCandidates;
 	cv::Mat cameraMatrix;
 	cv::Mat distCoeffs = cv::Mat::zeros(5, 1, CV_64F);
-	std::vector<cv::Vec3d> rvecs, tvecs;
+	cv::Mat rvec, tvec;
 	cv::Mat R;
 	mat4x3 cameraPose = mat4x3(1.0f);
 	bool isaruco = false;
 
 	void get_aruco_pose();
+	void set_aruco_board();
+
+	// Pose ImGUI
+	GLuint aruco_texture;
+
+	void color_to_texture();
 	void visualize_camera_pose(ImDrawList* list, const mat4& world2proj);
 
-	GLuint aruco_texture;
-	void color_to_texture();
+	
 
 	void set_mode(ETestbedMode mode);
 

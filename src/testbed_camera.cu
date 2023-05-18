@@ -26,27 +26,29 @@ void Testbed::get_color_image(){
     colorImage = cv::Mat(cv::Size(color_width, color_height), CV_8UC3, (void*)color.get_data(), cv::Mat::AUTO_STEP);
 }
 
+void Testbed::set_aruco_board(){
+    board = cv::aruco::GridBoard::create(5, 7, markerLength, gap, arucoDict);
+}
+
 void Testbed::get_aruco_pose(){
     outputImage = colorImage.clone();
-    cv::aruco::detectMarkers(outputImage, dictionary, markerCorners, markerIds);
+    cv::aruco::detectMarkers(outputImage, arucoDict, markerCorners, markerIds);
     if(markerIds.size() > 0){
-		cv::aruco::drawDetectedMarkers(outputImage, markerCorners, markerIds);
-        cv::aruco::estimatePoseSingleMarkers(markerCorners, markerLength,  cameraMatrix, distCoeffs,
-            rvecs, tvecs);
-        
-        cv::Rodrigues(rvecs[0], R);
+        cv::aruco::drawDetectedMarkers(outputImage, markerCorners, markerIds);
+        cv::aruco::estimatePoseBoard(markerCorners, markerIds, board, cameraMatrix, distCoeffs, rvec, tvec);
+        cv::Rodrigues(rvec, R);
         const double* dataPtr = R.ptr<double>(0);
         for(int i = 0; i < 3; ++i){
             for(int j = 0; j < 3; ++j){
                 cameraPose[j][i] = dataPtr[i * 3 + j];
             }
         }
+        dataPtr = tvec.ptr<double>(0);
         for(int i = 0; i < 3; ++i){
-            cameraPose[3][i] = tvecs[0][i];
+            cameraPose[3][i] = dataPtr[i];
         }
         isaruco = true;
-	}
-    else {
+    } else {
         isaruco = false;
     }
 }
