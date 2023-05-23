@@ -269,6 +269,7 @@ list(APPEND NGP_SOURCES
 	src/nerf_loader.cu
 	src/render_buffer.cu
 	src/testbed.cu
+	src/testbed_camera.cu
 	src/testbed_image.cu
 	src/testbed_nerf.cu
 	src/testbed_sdf.cu
