@@ -19,9 +19,3 @@ __pycache__
 .DS_Store
 imgui.ini
 requirements.txt
-/.devcontainer
-/.github
-/docs
-/notebooks
-/scripts
-.editorconfig
