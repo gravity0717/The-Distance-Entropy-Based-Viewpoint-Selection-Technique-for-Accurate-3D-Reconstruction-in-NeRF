@@ -21,9 +21,6 @@ imgui.ini
 requirements.txt
 /.devcontainer
 /.github
-/cmake
-/configs
-/data
 /docs
 /notebooks
 /scripts
