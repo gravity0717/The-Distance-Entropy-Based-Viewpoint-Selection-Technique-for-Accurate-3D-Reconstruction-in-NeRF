@@ -1,6 +1,10 @@
 # AdvancedML-NGP
 고급머신러닝 수업 프로젝트
 
+```
+git clone --recursive https://github.com/mint-lab/advancedML-NGP.git
+```
+
 ## Introduction
 3D Reconstruction에는 다양한 시점에서의 이미지를 필요로 한다. 거대한 장면이나, 복잡한 물체에 대해서는 더 많은 시점에서의 이미지를 필요로하며, 이미지를 획득하는데에 숙련도가 요구된다. 숙련되지 않은 초보자가 이미지를 획득했을때, 복원하는데 어려움을 겪고 실패할 수 있으며 많은 시간과 노력을 필요로 한다. 기존에 주어진 가이드는 휴리스틱하고 구체적인 방법이 제시되지 않았다. 이러한 문제를 해결하고자 *View-selection*, *Uncertainty*를 keyword로 잡고 프로젝트를 진행한다.
 
