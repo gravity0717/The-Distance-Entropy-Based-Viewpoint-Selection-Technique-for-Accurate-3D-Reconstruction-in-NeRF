@@ -347,6 +347,43 @@ void Testbed::load_file(const fs::path& path) {
 		}
 	}
 
+	// we definitely need cfg file for setup many config.
+	// first, camera config, if it is usb or realsense, then we should set its parameter as it is written
+	// second, aruco board config, its size, end flag for cut other parts
+	// third, 
+	if (equals_case_insensitive(path.extension(), "cfg")) {
+		json cfg;
+		{
+			std::ifstream f{native_string(path)};
+			cfg = json::parse(f, nullptr, true, true);
+			tlog::info() << "Yes i read cfg file but it is written as json format";
+
+			// load mint setup
+			if (cfg.contains("camera"))
+			load_mint_config(path);
+			return;
+		}
+
+		// // Snapshot in json format... inefficient, but technically supported.
+		// if (cfg.contains("snapshot")) {
+		// 	load_snapshot(path);
+		// 	return;
+		// }
+
+		// // Regular network config
+		// if (cfg.contains("parent") || cfg.contains("network") || cfg.contains("encoding") || cfg.contains("loss") || cfg.contains("optimizer")) {
+		// 	reload_network_from_file(path);
+		// 	return;
+		// }
+
+		// // Camera path
+		// if (cfg.contains("path")) {
+		// 	load_camera_path(path);
+		// 	return;
+		// }
+	}
+
+
 	// If the dragged file isn't any of the above, assume that it's training data
 	try {
 		bool was_training_data_available = m_training_data_available;
@@ -3063,10 +3100,14 @@ void Testbed::set_n_views(size_t n_views) {
 };
 #endif //NGP_GUI
 
-void Testbed::init_window(int resw, int resh, bool hidden, bool second_window) {
+void Testbed::init_window(int resw, int resh, int camera_type, bool hidden, bool second_window) {
 #ifndef NGP_GUI
 	throw std::runtime_error{"init_window failed: NGP was built without GUI support"};
 #else
+	// This is camera init space!!!!!!
+	cam_type =  (CameraType)camera_type;
+
+	// This is camera init space!!!!!!
 	m_window_res = {resw, resh};
 
 	glfwSetErrorCallback(glfw_error_callback);
@@ -3347,10 +3388,12 @@ void Testbed::update_vr_performance_settings() {
 }
 
 bool Testbed::frame() {
-
-	get_color_image();
+	cam_stream->get_color_image(colorImage);
 	get_aruco_pose();
 	color_to_texture();
+	cv::imshow("do_i_get_image", colorImage);
+	if (cv::waitKey(25) == 27)
+			return false;
 
 #ifdef NGP_GUI
 	if (m_render_window) {

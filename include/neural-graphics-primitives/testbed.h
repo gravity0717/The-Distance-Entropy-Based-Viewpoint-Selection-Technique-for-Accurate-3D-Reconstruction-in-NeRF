@@ -85,18 +85,88 @@ public:
 	// Candidate Views
 	struct CandidateView {
 		vec3 tvec;
-		vec3 rvec;
-		// vec3 up;
-		// vec2 focal_length;
-		// float fov;
-		// float score;
+		quat rquat;
+		mat4 transform;
 	};
+
+	class SphereCandidates{
+	public:
+		float radius;
+		int n_total_candidates;
+		int n_floor;
+		int n_areas;
+		vec3 origin = vec3(0.0f, 0.0f, 0.0f);
+		std::vector<CandidateView> v_candidate_views;
+
+		void init(nlohmann::json& j);
+		void gen_candidate_views();
+	};
+	
 	std::vector<CandidateView> m_candidate_views;
+
+	SphereCandidates candidate_handler;
+
 	void gen_candidate_views();
 	const int n_points = 100;
 	const int n_steps = 5;
 	const float radius = 1.5f;
 	const vec3 origin = vec3(0.0f, 0.0f, 0.0f);
+
+	// Camera Config
+	enum CameraType{
+		NOCAM = 0,
+		USB,
+		REALSENSE
+	};
+
+	class CameraStream
+	{
+	public:
+		virtual void init(nlohmann::json& j);
+		
+		CameraType cam_type;
+		std::string model;
+		int fps;
+		cv::Size resolution;
+		cv::Mat camera_matrix = cv::Mat::eye(3, 3, CV_64F);
+		cv::Mat intrinsic = cv::Mat::zeros(4, 1, CV_64F);
+		cv::Mat dist_coeff = cv::Mat::zeros(5, 1, CV_64F);
+
+		virtual bool get_color_image(cv::Mat& color_image){
+			return true;
+		};
+		virtual ~CameraStream(){
+			
+		};
+	};
+
+	class USBCamera: public CameraStream
+	{
+		std::string device;		
+		cv::VideoCapture cap;
+		cv::Mat color;
+
+		void init(nlohmann::json& j) override;
+		bool get_color_image(cv::Mat& color_image) override;
+	};
+
+	class RealSense: public CameraStream
+	{
+		rs2::pipeline pipe;
+		rs2::config cfg;
+		rs2::frameset frames;
+		rs2::frame color;
+		rs2_intrinsics intrinsics;
+
+		void init(nlohmann::json& j) override;
+		bool get_color_image(cv::Mat& color_image) override;
+	};
+
+	std::unique_ptr<CameraStream> cam_stream;
+
+	void load_mint_config(const fs::path& path);
+	CameraType cam_type = CameraType::NOCAM;
+
 
 	// realsense
 	rs2::pipeline pipe;
@@ -108,7 +178,7 @@ public:
 	int color_width = 640;
 	int color_height = 480;
 
-	void init_camera();
+	bool init_camera();
 	void get_color_image();
 
 	// aruco
@@ -525,7 +595,7 @@ public:
 	void draw_visualizations(ImDrawList* list, const mat4x3& camera_matrix);
 	void train_and_render(bool skip_rendering);
 	fs::path training_data_path() const;
-	void init_window(int resw, int resh, bool hidden = false, bool second_window = false);
+	void init_window(int resw, int resh, int camera_type, bool hidden = false, bool second_window = false);
 	void destroy_window();
 	void init_vr();
 	void update_vr_performance_settings();

@@ -111,6 +111,13 @@ int main_func(const std::vector<std::string>& arguments) {
 		{'v', "version"},
 	};
 
+	ValueFlag<int> camera_type_flag{
+		parser,
+		"USING_CAMERA",
+		"This is flag for whether we use camera or not.\nCamera type -> 0: No cam, 1: USB, 2: Realsense\n",
+		{"camera_type"},
+	};
+
 	PositionalList<string> files{
 		parser,
 		"files",
@@ -174,7 +181,7 @@ int main_func(const std::vector<std::string>& arguments) {
 #endif
 
 	if (gui) {
-		testbed.init_window(width_flag ? get(width_flag) : 1920, height_flag ? get(height_flag) : 1080);
+		testbed.init_window(width_flag ? get(width_flag) : 1920, height_flag ? get(height_flag) : 1080, camera_type_flag ? get(camera_type_flag) : 0);
 	}
 
 	if (vr_flag) {
