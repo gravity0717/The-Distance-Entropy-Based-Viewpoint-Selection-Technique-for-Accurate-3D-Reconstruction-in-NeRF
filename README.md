@@ -10,8 +10,8 @@ You can access published paper [here](https://jkros.org/_common/do.php?a=full&b=
 Next-Best-View
 
 ## Contributor 
-Jinwon Choi (randomwons)
-Jun Hyeok Choi (cjh1995-ros) 
+Jinwon Choi (randomwons) \
+Jun Hyeok Choi (cjh1995-ros) \
 Chanho Seo (gravity0717)
 
 ## TODO
