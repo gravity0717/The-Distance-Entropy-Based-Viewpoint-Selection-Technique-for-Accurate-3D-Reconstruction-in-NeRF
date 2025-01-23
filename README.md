@@ -1,26 +1,31 @@
-# AdvancedML-NGP
-고급머신러닝 수업 프로젝트
-
-```
-git clone --recursive https://github.com/mint-lab/advancedML-NGP.git
-```
+# The Distance-Entropy Based Viewpoint Selection Technique for Accurate 3D Reconstruction in NeRF
 
 ## Introduction
+3D reconstruction requires images from various viewpoints. For large scenes or complex objects, more viewpoints are necessary, and acquiring these images requires skill. When inexperienced beginners capture the images, they may encounter difficulties in reconstruction, potentially leading to failure and requiring significant time and effort. Existing guidelines are heuristic and lack specific methods. To address this issue, the project focuses on view-selection and uncertainty as key concepts.
+You can access published paper [here](https://jkros.org/_common/do.php?a=full&b=33&bidx=3565&aidx=39610).
+
 3D Reconstruction에는 다양한 시점에서의 이미지를 필요로 한다. 거대한 장면이나, 복잡한 물체에 대해서는 더 많은 시점에서의 이미지를 필요로하며, 이미지를 획득하는데에 숙련도가 요구된다. 숙련되지 않은 초보자가 이미지를 획득했을때, 복원하는데 어려움을 겪고 실패할 수 있으며 많은 시간과 노력을 필요로 한다. 기존에 주어진 가이드는 휴리스틱하고 구체적인 방법이 제시되지 않았다. 이러한 문제를 해결하고자 *View-selection*, *Uncertainty*를 keyword로 잡고 프로젝트를 진행한다.
 
 ## Related Work
 Next-Best-View
+
+## Contributor 
+Jinwon Choi (randomwons)
+Jun Hyeok Choi (cjh1995-ros) 
+Chanho Seo (gravity0717)
 
 ## TODO
 - [x] Instant-NGP 코드 분석
 - [x] Entropy 랜더링
 - [x] Camera 연결
 - [x] Camera pose estimation (ArUco)
-- [ ] Candidate view 생성?
-- [ ] View-selection
-- [ ] View pose rendering
-- [ ] Evaluation
+- [x] Candidate view 생성
+- [x] View-selection
+- [x] View pose rendering
+- [x] Evaluation
 
+## Demo 
+![demo](asset/demo.gif)
 
 ## License and Citation
 
